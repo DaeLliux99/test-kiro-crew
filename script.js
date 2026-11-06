@@ -9,6 +9,7 @@
   const itemsLeft = document.getElementById("items-left");
   const clearCompletedBtn = document.getElementById("clear-completed");
   const filterButtons = document.querySelectorAll(".filter-btn");
+  const progressBar = document.getElementById("progress-bar");
 
   /** @type {{id: string, text: string, completed: boolean}[]} */
   let todos = loadTodos();
@@ -86,6 +87,15 @@
     itemsLeft.textContent = `${pending} ${
       pending === 1 ? "tarea pendiente" : "tareas pendientes"
     }`;
+
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const total = todos.length;
+    const completed = todos.filter((t) => t.completed).length;
+    const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+    progressBar.style.width = percent + "%";
   }
 
   function buildItem(todo) {

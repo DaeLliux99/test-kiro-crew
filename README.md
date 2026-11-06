@@ -10,6 +10,7 @@ Aplicación sencilla de lista de tareas hecha con HTML, CSS y JavaScript puro (s
 - Filtrar por: todas / pendientes / completadas
 - Limpiar todas las completadas
 - Contador de tareas pendientes
+- Barra de progreso según el porcentaje de tareas completadas
 - Persistencia en `localStorage` (las tareas se guardan en el navegador)
 
 ## Uso

@@ -83,6 +83,22 @@ h1 {
   background: var(--primary-hover);
 }
 
+.progress {
+  height: 8px;
+  background: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--primary);
+  border-radius: 999px;
+  transition: width 0.25s ease;
+}
+
 .filters {
   display: flex;
   gap: 0.5rem;
