@@ -85,7 +85,7 @@
     const pending = todos.filter((t) => !t.completed).length;
     itemsLeft.textContent = `${pending} ${
       pending === 1 ? "tarea pendiente" : "tareas pendientes"
-    }`;
+    } de ${todos.length}`;
   }
 
   function buildItem(todo) {
