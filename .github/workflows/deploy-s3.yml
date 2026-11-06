@@ -1,0 +1,48 @@
+name: Deploy to S3
+
+# Despliega la todolist al bucket S3 estático en cada push a main.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+# Permisos necesarios para la autenticación OIDC con AWS.
+permissions:
+  id-token: write   # requerido para solicitar el token OIDC
+  contents: read    # requerido para hacer checkout del repo
+
+concurrency:
+  group: deploy-s3
+  cancel-in-progress: true
+
+env:
+  AWS_REGION: us-east-1
+  S3_BUCKET: web-todo-list-41n2jk341nj234l11n23j4kl
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::743274300479:role/github-actions-todolist-deploy
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Sync site to S3
+        run: |
+          aws s3 sync . "s3://${S3_BUCKET}" \
+            --delete \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude "README.md" \
+            --exclude ".gitignore"
+
+      - name: Deployment summary
+        run: |
+          echo "### Despliegue completado :rocket:" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Sitio: http://${S3_BUCKET}.s3-website-${AWS_REGION}.amazonaws.com" >> "$GITHUB_STEP_SUMMARY"
